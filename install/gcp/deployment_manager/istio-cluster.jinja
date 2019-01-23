@@ -62,6 +62,7 @@ resources:
         - https://www.googleapis.com/auth/servicecontrol
         - https://www.googleapis.com/auth/service.management.readonly
         - https://www.googleapis.com/auth/userinfo.email
+        - https://www.googleapis.com/auth/devstorage.read_only
 
     networkInterfaces:
     - network: https://www.googleapis.com/compute/v1/projects/{{ env["project"] }}/global/networks/default
@@ -133,9 +134,6 @@ resources:
           kubectl label namespace default istio-injection=enabled
 
           sleep 150
-
-          kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
-          kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
 
           gcloud beta runtime-config configs variables set success/{{ CLUSTER_NAME }}-waiter success --config-name $(ref.{{ CLUSTER_NAME }}-config.name)
           gcloud -q compute instances delete {{ CLUSTER_NAME }}-vm --zone {{ properties['zone'] }}
